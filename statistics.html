@@ -6,6 +6,8 @@
     <meta name="author" content="이광춘" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
     <link rel="stylesheet" href="css/koRea_nhsr.css" type="text/css" />
     <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
   </head>
@@ -36,39 +38,269 @@ name: digital-ranking
 .pull-left[
 
 4차 산업혁명은 .warmyellow[**디지털 전환(Digital Transformation)**] 이라는 용어로 대체되고 있으며
-전세계가 디지털 전환을 통해 새로운 도약을 준비하고 있어 다양한 지표를 통해
-현재 대한민국 현재 위치를 데이터를 기반으로 객관적으로 파악한다.
+전세계가 디지털 전환을 통해 새로운 도약을 준비하고 있다.
 
-구글, 아마존으로 시작된 .green[**디지털 기업(AI 기업)**]의 전형은 정부는 물론 비영리 조직과 
-거의 모든 조직과 단체에 빠르게 파급되고 있어 디지털 기업 본질을 살펴본다.
+이를 위해서 디지털 전환을 떠받치고 있는 **데이터 과학**을 심도 깊이 다루기 전에 
+그 기반기술을 차례차례 살펴보자.
 
-마지막으로 디지털 기업의 핵심 경쟁력으로 파악되는 .black[**인공지능**]과 기술적 기반이 되는 
-.black[**딥러닝**]에 대해 전반적으로 조망한다.
+데이터 과학을 구성하는 통계학과 기계학습이 큰 축으로 볼 수 있다.
 
 ]
  
 .pull-right[   
 .left[
 
-1\. **[.warmyellow[디지털 전환]](#digital-ranking)** &lt;br&gt;&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    1\.1\. 전통적 지표 &lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    1\.2\. 디지털 지표
+1\. **[.warmyellow[통계학]](#digital-ranking)** &lt;br&gt;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    1\.1\. 중심극한정리 &lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    1\.2\. 회귀모형
     
-2\. [디지털 조직](#digital-transformation) &lt;br&gt;&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    2\.1\. 전통기업 &lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    2\.2\. 디지털 기업 &lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    2\.3\. 충돌(전쟁) &lt;br&gt;
 
-3\. [인공지능 / 딥러닝](#deep-learning) &lt;br&gt;&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    3\.1\. 자동화 &lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    3\.2\. 인공지능 &lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    2\.3\. 딥러닝 &lt;br&gt;
-
-4\. [마무리](#goodbye) 
+2\. [마무리](#goodbye) 
 ]
 ] &lt;!--end of right-column--&gt;
 
 
+
+
+&lt;!---------------------- 1. 중심극한정리(정규분포) -------------------------------------&gt;
+
+
+
+---
+class: center, middle, inverse
+
+# 중심극한정리
+
+## CLT (Central Limit Theorem)
+
+
+---
+name: statistics-clt
+# 중심극한정리
+
+### 직관적 설명
+
+&gt; 동일한 확률분포를 가진 독립 확률 변수로부터 추출한 `n`개 평균 분포는 
+`n`이 적당히 크다면 정규분포에 가까워진다는 정리이다. 
+특히 동일한 확률분포가 정규분포가 아니더라도 관계없이 평균의 분포는 정규분포를 따른다.
+
+### 수식
+
+[린데베르그–레비](https://ko.wikipedia.org/wiki/중심_극한_정리) 중심극한정리(Lindeberg–Lévy central limit theorem)에 따르면, 같은 분포를 가지는 독립 확률 변수에 대해 다룬다. 이 정리는 다음과 같다. 만약 확률 변수 `\(X_1, X_2, \cdots\)`들이
+
+- 서로 독립적이고,
+- 같은 확률 분포를 가지고,
+- 그 확률 분포의 기댓값 `\(\mu\)`와 `\(\sigma\)`가 유한하다면,
+
+평균 `\(S_n = \frac{(X_1 + \cdots + X_n)}{n}\)`의 분포는 기댓값 `\(\mu\)`와 표준편차 `\(\frac{\sigma}{\sqrt{n}}\)`인 
+`\(\mathcal{N}(\mu,\,\frac{\sigma^{2}}{n})\)`에 분포수렴한다. 즉, 다음이 성립한다.
+
+`$$\sqrt{n}\bigg(\frac{ \sum_{i=1}^n X_i}{n} - \mu\bigg)\ \xrightarrow{d}\ \mathcal{N}(0,\;\sigma^2)$$`
+
+### 함의
+
+&gt; 모집단에서 추출한 표본으로부터 모집단의 평균  `\(\mu\)` 을 **추정(estimation)**하는데 유용하고, 이를 통해서 추정값이 모평균과 얼마나 차이가 날지 대략적인 정보도 얻을 수 있다.
+
+---
+name: normal-in-action
+# 정규분포
+
+.panelset[
+
+.panel[.panel-name[골턴 보드]
+.center[
+&lt;img src="fig/galton-board.png" alt="프랜시스 골턴" width="25%" /&gt;
+]
+]
+
+.panel[.panel-name[동영상]
+&lt;br&gt;
+.center[
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/EvHiee7gs9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+]
+]
+
+.panel[.panel-name[모의실험]
+&lt;br&gt;
+.center[
+&lt;iframe width="560" height="315" src="fig/yihui-animation.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-external="1"&gt;&lt;/iframe&gt;
+]
+]
+
+.panel[.panel-name[실제사례 - 신장]
+
+
+
+.center[
+&lt;img src="fig/육군_신장.png" alt="프랜시스 골턴" width="60%" /&gt;
+]
+
+]
+
+.panel[.panel-name[미국 대학생 신장]
+&lt;br&gt;
+.center[
+&lt;img src="fig/normal-in-action.png" alt="실제 정규분포" width="100%" /&gt;
+]
+]
+
+
+]
+
+.footnote[
+- [육군 신체측정정보 : 육군 신체측정 데이터(수시 업데이터)](https://opendata.mnd.go.kr/openinf/sheetview2.jsp?infId=OA-9425)
+]
+
+---
+name: galton-code
+# 구현
+
+.panelset[
+
+.panel[.panel-name[코드]
+
+
+```r
+library(tidyverse)
+# options(gganimate.nframes = 400, scipen = 10)
+
+## 설정 --------------
+n &lt;- 70  # number of ball bearnings 
+stop_level &lt;- 10 # number of perturbation levels 
+                # make it an even number
+levels &lt;- 44 # greater than stop_levels
+
+## 데이터셋 -----------
+set.seed(2019)
+ball_bearings &lt;- crossing(unit_id = 1:n, 
+                          level = 1:levels - 1) %&gt;% 
+  mutate(perturbation =     # moves
+           sample(c(-1,1),  # left or right
+                  n(), # each ball at each level 
+                  replace = T)) %&gt;%
+  group_by(unit_id) %&gt;% # operations on each ball
+  mutate(perturbation = 
+           ifelse(row_number() == 1, 
+                  yes = 0, # start centered
+                  no = perturbation)) %&gt;% 
+  # each ball should release one at a time
+  mutate(time = # displacing them in time w/ 
+           row_number() + 
+           # using unit id
+           unit_id * 3 - 1) %&gt;% 
+  filter(time &gt; 0) %&gt;% 
+  mutate(x_position = # we get the x position
+           # by summing the cumulative distributions
+           cumsum(perturbation)) %&gt;% 
+  # if ball is beyond the perturbation levels
+  mutate(x_position = # we overwrite the x position
+           ifelse(level &lt;= stop_level,
+                  yes = x_position, 
+                  no = NA)) %&gt;% 
+  # then fill in with the last x position
+  fill(x_position) %&gt;% 
+  ungroup()
+
+## 최종 관측점----------
+ball_bearings %&gt;% 
+  filter(level == (levels - 1) ) %&gt;% 
+  rename(final_time = time) %&gt;% 
+  crossing(time = as.numeric(1:max(ball_bearings$time))) %&gt;% 
+  group_by(time, x_position) %&gt;% 
+  summarise(x_position_count = sum(time &gt; final_time)) -&gt;
+ball_bearings_collect
+
+
+## 갤톤 상자
+pegs &lt;- crossing(unit_id = -stop_level:stop_level, 
+                 level = 1:stop_level) %&gt;% 
+  mutate(transparent = 
+           (unit_id + level) %% 2) 
+# Lets make walls
+walls &lt;- crossing(unit_id = 
+           -(stop_level + 1):(stop_level + 1), 
+         level = stop_level:levels) %&gt;% 
+  mutate(transparent = 
+           unit_id %% 2) 
+
+ball_bearings_size &lt;- 2
+peg_size &lt;- 3
+
+## 정적 그래프
+
+galton_static &lt;- ggplot(ball_bearings) +
+  aes(y = level) +
+  aes(x = x_position) +
+  scale_y_reverse() +
+  aes(group = unit_id) +
+  geom_point(data = walls, 
+             aes(x = unit_id, alpha = transparent), 
+             col = "grey30", size = peg_size) +
+  geom_point(data = pegs, 
+             aes(x = unit_id, alpha = transparent), 
+             col = "grey30", size = peg_size) +
+  geom_segment(x = -sqrt(n), xend = -1.5, 
+               y = 0, yend = 0) +
+  geom_segment(x = sqrt(n), xend = 1.5, 
+               y = 0, yend = 0) +
+  geom_abline(intercept = 1.5, 
+              slope = -1) +
+  geom_abline(intercept = 1.5, 
+              slope = 1) +
+  annotate(geom = "tile", 
+           height = 2, width = 2, 
+           x = 0 , y = -1.5) +
+  annotate(geom = "tile", 
+           height = 2, width = 1.75, 
+           x = 0 , y = -1.5, fill = "white") +
+  geom_rect(data = ball_bearings_collect,
+            mapping = aes(xmin = x_position - .35, 
+                          xmax = x_position + .35,
+                          ymax = max(ball_bearings$level) + 1 - x_position_count*1.5,
+                          ymin = max(ball_bearings$level) + 1,
+                          group = x_position, 
+                          y = NULL, x = NULL),
+            fill = "darkgrey") +
+  geom_point(size = ball_bearings_size, 
+             col = "steelblue") +
+  coord_equal() +
+  geom_hline(yintercept = stop_level, 
+             linetype = "dotted") +
+  scale_alpha_continuous(range = c(0, 1), guide = F) +
+  theme_void()
+
+# galton_static
+
+## 애니메이션
+# galton_static +  
+#   gganimate::transition_time(time = time) + 
+#   gganimate::shadow_wake(wake_length = .05) + 
+#   gganimate::ease_aes("bounce-in-out") #BREAK
+```
+
+
+]
+
+.panel[.panel-name[정적 그래프]
+
+&lt;img src="statistics_files/figure-html/galton-ggplot-output-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[디지털 트윈]
+
+.center[
+![](fig/galton_ani.gif)
+]
+
+]
+]
+
+]
+
+.footnote[
+- 코드출처: [Minimal Galton Board - Gina Reynolds](https://evamaerey.github.io/statistics/galton_board.html)
+]
 
 
 &lt;!-- -------------------- 99. 마무리 ----------------------------- --&gt;
@@ -91,284 +323,6 @@ class: middle, inverse
 
 ]
 ]
-
-&lt;!---------------------- 1. 갤톤 보드 -------------------------------------&gt;
-
-
-
----
-name: goodbye
-class: middle, inverse
-
-.pull-left[
-# **경청해 주셔서 &lt;br&gt;감사합니다.**
-&lt;br/&gt;
-]
-
-.pull-right[
-.right[
-
-&lt;img style="border-radius: 100%;" src="fig/korea_R_logo.png" width="300px"/&gt;
-
-]
-]
-
-
-
----
-class: center, middle, inverse
-
-# Figure 2.2
-
-
----
-
-
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-*library(tidyverse)
-```
-]
- 
-.panel2-fig_2_2-auto[
-
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-*library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-```
-]
- 
-.panel2-fig_2_2-auto[
-
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-*prelim_NationalAnthemTimes
-```
-]
- 
-.panel2-fig_2_2-auto[
-
-```
-[90m# A tibble: 40 × 4[39m
-   year genre    sex     time
-  [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m    [3m[90m&lt;chr&gt;[39m[23m  [3m[90m&lt;dbl&gt;[39m[23m
-[90m1[39m  [4m2[24m019 R&amp;B/Soul female   121
-[90m2[39m  [4m2[24m018 Pop      female   113
-[90m3[39m  [4m2[24m017 Country  male     124
-[90m4[39m  [4m2[24m016 Pop      female   129
-[90m5[39m  [4m2[24m015 Pop      female   124
-[90m6[39m  [4m2[24m014 Other    female   114
-[90m# … with 34 more rows[39m
-```
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-* ggplot()
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_04_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-* aes(x = time)
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_05_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-  aes(x = time) +
-* geom_rug()
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_06_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-  aes(x = time) +
-  geom_rug() +
-* geom_dotplot()
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_07_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-  aes(x = time) +
-  geom_rug() +
-  geom_dotplot() +
-* labs(title = "Superbowl National Anthem Performance Duration")
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_08_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-  aes(x = time) +
-  geom_rug() +
-  geom_dotplot() +
-  labs(title = "Superbowl National Anthem Performance Duration") +
-* labs(x = "Duration in Seconds")
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_09_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-count: false
- 
-### 중심극한정리
-.panel1-fig_2_2-auto[
-
-```r
-library(tidyverse)
-library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")  # devtools::install_github("EvaMaeRey/ma206data")
-
-prelim_NationalAnthemTimes %&gt;%
-  ggplot() +
-  aes(x = time) +
-  geom_rug() +
-  geom_dotplot() +
-  labs(title = "Superbowl National Anthem Performance Duration") +
-  labs(x = "Duration in Seconds") +
-* labs(y = "Number of Performances")
-```
-]
- 
-.panel2-fig_2_2-auto[
-&lt;img src="statistics_files/figure-html/fig_2_2_auto_10_output-1.png" style="display: block; margin: auto;" /&gt;
-]
-
-&lt;style&gt;
-.panel1-fig_2_2-auto {
-  color: black;
-  width: 49%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-fig_2_2-auto {
-  color: black;
-  width: 49%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-fig_2_2-auto {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
-
 
 
 

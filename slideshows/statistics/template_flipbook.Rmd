@@ -1,0 +1,29 @@
+
+---
+class: center, middle, inverse
+
+# 중심극한정리
+
+## CLT (Central Limit Theorem)
+
+
+---
+
+
+`r flipbookr::chunk_reveal("fig_2_2", title = "### 중심극한정리",  widths = c(50, 50))`
+
+
+```{r fig_2_2, include = FALSE}
+library(tidyverse)
+library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")
+
+prelim_NationalAnthemTimes %>% 
+  ggplot() + 
+  aes(x = time) + 
+  geom_rug() + 
+  geom_dotplot() + 
+  labs(title = "Superbowl National Anthem Performance Duration") +
+  labs(x = "Duration in Seconds") + 
+  labs(y = "Number of Performances")
+```
+

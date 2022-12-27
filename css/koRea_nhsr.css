@@ -11,12 +11,16 @@
 code.r.hljs.remark-code{
   position: relative;
   overflow-x: auto;
+  overflow-y: auto;
+  min-height: 500px;
 }
 
 
 code.r.hljs.remark-code:hover{
-  overflow-x:auto;
+  overflow-x: auto;
+  overflow-y: auto;
   border-style: solid;
+  min-height: 500px;
 }
 
 

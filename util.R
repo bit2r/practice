@@ -1,30 +1,3 @@
-library(showtext)
-library(tidyverse)
-library(NHSRtheme)
-
-xaringanExtra::use_panelset()
-# library(nhsrtheme)
-# library(NHSRdatasets)
-# set default options
-
-options(
-  htmltools.dir.version = FALSE, 
-  htmltools.preserve.raw = FALSE,
-  tibble.width = 60, tibble.print_min = 6,
-  crayon.enabled = TRUE
-)
-
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
-                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center',
-                      fig.width = 7.252,
-                      fig.height = 4,
-                      dpi = 300)
-
-# uncomment the following lines if you want to use the NHS-R theme colours by default
-scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
-scale_fill_discrete <- partial(scale_fill_nhs, discrete = TRUE)
-scale_colour_continuous <- partial(scale_colour_nhs, discrete = FALSE)
-scale_colour_discrete <- partial(scale_colour_nhs, discrete = TRUE)
 
 showtext::showtext_auto()
 
