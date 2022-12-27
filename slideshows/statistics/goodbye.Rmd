@@ -1,0 +1,17 @@
+
+---
+name: goodbye
+class: middle, inverse
+
+.pull-left[
+# **경청해 주셔서 <br>감사합니다.**
+<br/>
+]
+
+.pull-right[
+.right[
+
+<img style="border-radius: 100%;" src="fig/korea_R_logo.png" width="300px"/>
+
+]
+]

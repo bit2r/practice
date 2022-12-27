@@ -1,9 +1,8 @@
 ---
-title: "디지털 전환과 인공지능"
-subtitle: "디지털 전환, AI 조직, 딥러닝"
+title: "기초통계"
+subtitle: "통계에 대한 다양한 기본지식을 학습합니다."
 author: "이광춘"
-institute: "한국 R 사용자회"
-date: "2022-07-28"
+date: "2022년 12월 27일"
 output:
   xaringan::moon_reader:
     css: 
@@ -17,7 +16,7 @@ output:
       highlightLines: true
       highlightLanguage: ["r"]
       countIncrementalSlides: false
-      ratio: "4:3"
+      ratio: 16:9
       beforeInit: "macros.js"
     includes:
       after_body: [css/koRea-logo.html]
@@ -26,98 +25,9 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-library(tidyverse)
-xaringanExtra::use_panelset()
-# library(nhsrtheme)
-# library(NHSRdatasets)
-# set default options
-
-options(
-  htmltools.dir.version = FALSE, 
-  htmltools.preserve.raw = FALSE,
-  tibble.width = 60, tibble.print_min = 6,
-  crayon.enabled = TRUE
-)
-
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
-                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center',
-                      fig.width = 7.252,
-                      fig.height = 4,
-                      dpi = 300)
-
-# uncomment the following lines if you want to use the NHS-R theme colours by default
-# scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
-# scale_fill_discrete <- partial(scale_fill_nhs, discrete = TRUE)
-# scale_colour_continuous <- partial(scale_colour_nhs, discrete = FALSE)
-# scale_colour_discrete <- partial(scale_colour_nhs, discrete = TRUE)
-
-library(showtext)
-
-showtext::showtext_auto()
-
-# GGPLOT THEME ------------------------------------------------------------
-
-theme_election <- function(..., font = "나눔바른펜") {
-  
-  theme_bw(base_family = font)  %+replace%
-    
-    theme(
-      
-      #grid elements
-      panel.grid.major.x = element_line(color='gray75'),
-      panel.grid.minor.x = element_blank(),
-      # axis.ticks = element_blank(),          #strip axis ticks
-      
-      #since theme_minimal() already strips axis lines, 
-      #we don't need to do that again
-      
-      #text elements
-      plot.title = element_text(             #title
-        family = font,            #set font family
-        size = 30,                #set font size
-        face = 'bold',            #bold typeface
-        hjust = 0,                #left align
-        vjust = 2),               #raise slightly
-      
-      plot.subtitle = element_text(          #subtitle
-        family = font,            #font family
-        hjust = 0,                #left align        
-        size = 17),               #font size
-      
-      plot.caption = element_text(           #caption
-        family = font,            #font family
-        size = 12,                 #font size
-        hjust = 1),               #right align
-      
-      axis.title = element_text(             #axis titles
-        family = font,            #font family
-        size = 20),               #font size
-      
-      axis.text.x = element_text(            #margin for axis text
-        margin=margin(5, b = 10),
-        size = rel(1.5),
-        family = font, face="bold"),
-      
-      axis.text.y = element_text(
-        size = rel(1.5),
-        colour = "gray35", 
-        family = font, face="bold"),
-      
-      strip.text.x = element_text(
-        size = rel(1.5), 
-        colour = "black", family = font, face="bold" ),
-      
-      strip.background = element_rect(fill="gray95"),
-      
-      legend.position = "top",
-      legend.title=element_text(size=12),
-      legend.text=element_text(size=10)
-      
-    )
-}
-
-
+source("util.R")
 ```
+
 
 class: title-slide, left, bottom
 
@@ -174,22 +84,42 @@ name: digital-ranking
 
 
 
-<!---------------------- 2. 디지털 조직 ------------------------------------->
-
-```{r child='slideshows/statistics/digital-traditional-company.Rmd'}
-```
-
-```{r child='slideshows/statistics/digital-network-ai-company.Rmd'}
-```
-
-```{r child='slideshows/statistics/digital-collision.Rmd'}
-```
-
-
-
 <!-- -------------------- 99. 마무리 ----------------------------- -->
 
-```{r child='slideshows/statistics/kossa-goodbye-69.Rmd'}
+```{r child='slideshows/statistics/goodbye.Rmd'}
+```
+
+<!---------------------- 1. 갤톤 보드 ------------------------------------->
+
+```{r child='slideshows/statistics/goodbye.Rmd'}
+```
+
+
+
+---
+class: center, middle, inverse
+
+# Figure 2.2
+
+
+---
+
+
+`r flipbookr::chunk_reveal("fig_2_2", title = "### 중심극한정리",  widths = c(50, 50))`
+
+
+```{r fig_2_2, include = FALSE}
+library(tidyverse)
+library(ma206data) # devtools::install_github("EvaMaeRey/ma206data")
+
+prelim_NationalAnthemTimes %>% 
+  ggplot() + 
+  aes(x = time) + 
+  geom_rug() + 
+  geom_dotplot() + 
+  labs(title = "Superbowl National Anthem Performance Duration") +
+  labs(x = "Duration in Seconds") + 
+  labs(y = "Number of Performances")
 ```
 
 

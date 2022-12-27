@@ -1,3 +1,35 @@
+
+/*-- FLIPBOOK CSS --*/
+.remark-code{line-height: 1.5; font-size: 70%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: auto;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:auto;
+  border-style: solid;
+}
+
+
+
+/*-- Inverse/divider slides --*/
+.inverse {
+  background-color: #005EB8;
+}
+.inverse, .inverse h1, .inverse h2, .inverse h3, .inverse a, inverse a > code {
+  color: #fff;
+}
+
+
 /*-- LINKS/ANCHORS --*/
 a {
   color:              #005EB8;
