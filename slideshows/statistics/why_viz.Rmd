@@ -1,0 +1,67 @@
+
+---
+class: center, middle, inverse
+
+# 시각화
+
+## 시각화의 중요성
+
+---
+name: datasauRus
+
+`r flipbookr::chunk_reveal("datasauRus", title = "### 공룡 데이터",  widths = c(50, 50))`
+
+
+```{r datasauRus, include = FALSE, cache=TRUE}
+library(tidyverse)
+
+datasauRus::datasaurus_dozen %>%
+  ggplot(aes(x = x,  y = y)) +
+    geom_point() +
+    facet_wrap(facets = vars(dataset)) +
+    # mean of x
+    ggxmean::geom_x_mean() +
+    ggxmean::geom_y_mean() +
+    # mean of y
+    ggxmean:::geom_x1sd(linetype = "dashed") +
+    ggxmean:::geom_y1sd(linetype = "dashed") +
+    # linear model
+    ggxmean::geom_lm() +
+    ggxmean::geom_lm_formula() +
+    # Pearson correlation
+    ggxmean:::geom_corrlabel()
+```
+
+
+---
+name: datasauRus-stat
+
+`r flipbookr::chunk_reveal("datasauRus-stat", title = "### 공룡 데이터",  left_assign = "detect", widths = c(50, 50))`
+
+
+```{r datasauRus-stat, include = FALSE}
+library(gt)
+
+datasauRus::datasaurus_dozen %>%
+  pivot_longer(cols = x:y) %>% 
+  group_by(dataset, name) %>% 
+  summarise(mean  = mean(value)) %>% 
+  pivot_wider(names_from = name, values_from = mean)
+
+datasauRus::datasaurus_dozen %>%
+  pivot_longer(cols = x:y) %>% 
+  group_by(dataset, name) %>% 
+  summarise(var  = var(value)) %>% 
+  pivot_wider(names_from = name, values_from = var)
+
+custom_correlation <- function(df) {
+  cor(df$x, df$y)
+}
+
+datasauRus::datasaurus_dozen %>%
+  group_by(dataset) %>% 
+  nest() %>% 
+  mutate(corr = map(data, custom_correlation)) %>% 
+  unnest(corr)
+```
+

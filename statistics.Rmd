@@ -105,10 +105,16 @@ name: digital-ranking
 ```{r child='slideshows/statistics/clt_normal.Rmd'}
 ```
 
+<!---------------------- 2. 시각화 ------------------------------------->
+
+```{r child='slideshows/statistics/why_viz.Rmd'}
+```
+
 <!-- -------------------- 99. 마무리 ----------------------------- -->
 
 ```{r child='slideshows/statistics/goodbye.Rmd'}
 ```
+
 
 
 
