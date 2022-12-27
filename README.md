@@ -1,2 +1,4 @@
-# practice
-데이터 과학 실습 코드
+# 통계학 
+
+
+- [통계학](statistics.html)
