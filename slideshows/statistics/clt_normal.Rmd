@@ -1,13 +1,5 @@
 
 ---
-class: center, middle, inverse
-
-# 중심극한정리
-
-## CLT (Central Limit Theorem)
-
-
----
 name: statistics-clt
 # 중심극한정리
 

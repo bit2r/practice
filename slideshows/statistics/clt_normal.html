@@ -1,71 +1,39 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>기초통계</title>
+    <title>통계학</title>
     <meta charset="utf-8" />
     <meta name="author" content="이광춘" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/panelset/panelset.css" rel="stylesheet" />
-    <script src="libs/panelset/panelset.js"></script>
-    <script src="libs/clipboard/clipboard.min.js"></script>
-    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
-    <script src="libs/shareon/shareon.min.js"></script>
-    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
-    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
-    <link rel="stylesheet" href="css/koRea_nhsr.css" type="text/css" />
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
   </head>
   <body>
     <textarea id="source">
+class: center, middle, inverse, title-slide
 
-
-
-
-
-class: title-slide, left, bottom
-
-# 기초통계
-----
-## **통계에 대한 다양한 기본지식을 학습합니다.**
+.title[
+# 통계학
+]
+.subtitle[
+## 중심극한정리
+]
+.author[
 ### 이광춘
-### 2022년 12월 27일
+]
 
- 
 ---
-class: inverse, middle
-name: digital-ranking
-
-# 강의 개요
-
-----
-
-.pull-left[
-
-4차 산업혁명은 .warmyellow[**디지털 전환(Digital Transformation)**] 이라는 용어로 대체되고 있으며
-전세계가 디지털 전환을 통해 새로운 도약을 준비하고 있다.
-
-이를 위해서 디지털 전환을 떠받치고 있는 **데이터 과학**을 심도 깊이 다루기 전에 
-그 기반기술을 차례차례 살펴보자.
-
-데이터 과학을 구성하는 통계학과 기계학습이 큰 축으로 볼 수 있다.
-
-]
- 
-.pull-right[   
-.left[
-
-1\. **[.warmyellow[통계학]](#digital-ranking)** &lt;br&gt;&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;    1\.1\. 중심극한정리 &lt;br&gt;
-
-
-2\. [마무리](#goodbye) 
-]
-] &lt;!--end of right-column--&gt;
 
 
 
-
-&lt;!---------------------- 1. 중심극한정리(정규분포) -------------------------------------&gt;
 
 
 
@@ -104,7 +72,7 @@ name: normal-in-action
 
 .panel[.panel-name[골턴 보드]
 .center[
-&lt;img src="fig/galton-board.png" alt="프랜시스 골턴" width="25%" /&gt;
+&lt;img src="../../fig/galton-board.png" alt="프랜시스 골턴" width="25%" /&gt;
 ]
 ]
 
@@ -118,16 +86,52 @@ name: normal-in-action
 .panel[.panel-name[모의실험]
 &lt;br&gt;
 .center[
-&lt;iframe width="560" height="315" src="fig/yihui-animation.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-external="1"&gt;&lt;/iframe&gt;
+&lt;iframe width="560" height="315" src="../../fig/yihui-animation.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-external="1"&gt;&lt;/iframe&gt;
 ]
 ]
 
 .panel[.panel-name[실제사례 - 신장]
 
 
+```r
+library(tidyverse)
+library(readxl)
+extrafont::loadfonts()
+
+body_sheets &lt;- excel_sheets("data/육군 신체측정 데이터(수시 업데이터).xls")
+
+body_list &lt;- list()
+
+for(i in 1:length(body_sheets)) {
+  cat(body_sheets[i], "\n")
+  body_list[[i]] &lt;- read_excel("data/육군 신체측정 데이터(수시 업데이터).xls", sheet = body_sheets[i])
+}
+
+body_raw &lt;- map_df(body_list, rbind)
+
+height_tbl &lt;- body_raw %&gt;% 
+  janitor::clean_names(ascii = FALSE) %&gt;% 
+  select(신장 = 신장_센티미터) %&gt;% 
+  mutate(신장 = parse_number(신장))
+
+army_height_g &lt;- height_tbl %&gt;% 
+  ggplot(aes(x = 신장)) +
+    geom_histogram(aes(y=..density..)) +
+    geom_density(color = "red") +
+    theme_election() +
+    labs(x = "신장(센티미터)",
+         y = "밀도",
+         title = "육군 신체측정정보 - 신장(키)",
+         subtitle = "2022년 4월 23일 기준")
+ 
+ggsave( glue::glue("fig/육군_신장.png") , 
+        army_height_g,
+        device = ragg::agg_png, 
+        width = 297, height = 210, units = "mm", res = 600) 
+```
 
 .center[
-&lt;img src="fig/육군_신장.png" alt="프랜시스 골턴" width="60%" /&gt;
+&lt;img src="../../fig/육군_신장.png" alt="프랜시스 골턴" width="60%" /&gt;
 ]
 
 ]
@@ -135,7 +139,7 @@ name: normal-in-action
 .panel[.panel-name[미국 대학생 신장]
 &lt;br&gt;
 .center[
-&lt;img src="fig/normal-in-action.png" alt="실제 정규분포" width="100%" /&gt;
+&lt;img src="../../fig/normal-in-action.png" alt="실제 정규분포" width="100%" /&gt;
 ]
 ]
 
@@ -278,14 +282,19 @@ galton_static &lt;- ggplot(ball_bearings) +
 
 .panel[.panel-name[정적 그래프]
 
-&lt;img src="statistics_files/figure-html/galton-ggplot-output-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+```r
+galton_static
+```
+
+&lt;img src="clt_normal_files/figure-html/galton-ggplot-output-1.png" width="80%" /&gt;
 
 ]
 
 .panel[.panel-name[디지털 트윈]
 
 .center[
-![](fig/galton_ani.gif)
+![](../../fig/galton_ani.gif)
 ]
 
 ]
@@ -296,32 +305,6 @@ galton_static &lt;- ggplot(ball_bearings) +
 .footnote[
 - 코드출처: [Minimal Galton Board - Gina Reynolds](https://evamaerey.github.io/statistics/galton_board.html)
 ]
-
-
-
-&lt;!-- -------------------- 99. 마무리 ----------------------------- --&gt;
-
-
-
----
-name: goodbye
-class: middle, inverse
-
-.pull-left[
-# **경청해 주셔서 &lt;br&gt;감사합니다.**
-&lt;br/&gt;
-]
-
-.pull-right[
-.right[
-
-&lt;img style="border-radius: 100%;" src="fig/korea_R_logo.png" width="300px"/&gt;
-
-]
-]
-
-
-
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -427,34 +410,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
-<style>
-.logo {
-  background-image: url(fig/korea_R_logo.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  width: 110px;
-  height: 128px;
-  z-index: 0;
-}
-</style>
-
-<script>
-document
-  .querySelectorAll(
-    '.remark-slide-content' +
-    ':not(.title-slide)' +
-    // add additional classes to exclude here, e.g.
-    ':not(.inverse)' +
-    ':not(.hide-logo)'
-  )
-  .forEach(el => {
-    el.innerHTML += '<div class="logo"></div>';
-  });
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

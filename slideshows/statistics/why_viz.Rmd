@@ -16,7 +16,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = F, 
                       warning = F, comment = "",
-                      fig.height = 4, cache = T)
+                      fig.height = 4)
 library(tidyverse)
 library(flipbookr)
 options(knitr.duplicate.label = "allow")
@@ -131,7 +131,7 @@ name: anscombe
 `r flipbookr::chunk_reveal("anscombe", title = "### 공룡 데이터",  widths = c(50, 50))`
 
 
-```{r anscombe, include = FALSE, cache=TRUE}
+```{r anscombe, include = FALSE}
 library(tidyverse)
 
 anscombe_tbl %>% 

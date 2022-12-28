@@ -1,18 +1,25 @@
 ---
-title: "Untitled"
-output: html_document
+layout: page
+title: "통계와 확률"
 date: "2022-12-28"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: hide
+    number_section: true
+    self_contained: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-options(knitr.duplicate.label = "allow")
-xaringanExtra::use_share_again()
-xaringanExtra::use_panelset()
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 ```
 
 
+# 시각화
 
 ```{r}
 library(tidyverse)
@@ -24,3 +31,20 @@ xaringanExtra::embed_xaringan(
   ratio = "16:9"
 )
 ```
+
+[바로가기](why_viz.html)
+
+# 중심극한정리
+
+```{r}
+library(tidyverse)
+
+slide_path <- glue::glue("{here::here()}/statistics.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](../../statistics.html)

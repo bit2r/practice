@@ -87,9 +87,8 @@ name: digital-ranking
 .left[
 
 1\. **[.warmyellow[통계학]](#digital-ranking)** <br><br>
-<!-- &nbsp;&nbsp;&nbsp;&nbsp;    1\.1\. 중심극한정리 <br> -->
-<!-- &nbsp;&nbsp;&nbsp;&nbsp;    1\.2\. 회귀모형 -->
-    
+&nbsp;&nbsp;&nbsp;&nbsp;    1\.1\. 중심극한정리 <br>
+
 
 2\. [마무리](#goodbye) 
 ]
@@ -102,14 +101,6 @@ name: digital-ranking
 
 ```{r child='slideshows/statistics/clt_normal.Rmd'}
 ```
-
-<!---------------------- 2. 시각화 ------------------------------------->
-
-<!-- ```{r child='slideshows/statistics/why_viz.Rmd'} -->
-<!-- ``` -->
-
-
-
 
 
 <!-- -------------------- 99. 마무리 ----------------------------- -->
