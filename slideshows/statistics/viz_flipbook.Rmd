@@ -24,12 +24,6 @@ xaringanExtra::use_share_again()
 xaringanExtra::use_panelset()
 ```
 
----
-class: center, middle, inverse
-
-# 시각화
-
-## 시각화의 중요성
 
 ---
 name: datasauRus

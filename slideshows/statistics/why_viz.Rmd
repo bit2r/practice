@@ -1,10 +1,162 @@
+---
+title: "통계학"
+subtitle: "시각화"
+author: "이광춘"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4, cache = T)
+library(tidyverse)
+library(flipbookr)
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+```
+
+
+
+---
+class: center, middle, inverse
+# Amscombe 데이터셋
+
+---
+name: anscombe-stat
+### 기술통계량
+
+
+.panelset[
+
+.panel[.panel-name[데이터셋]
+
+.pull-left[
+
+```{r anscombe-data, eval = FALSE}
+library(tidyverse)
+data(anscombe)
+
+anscombe_tbl <- anscombe %>% 
+  pivot_longer(cols = everything(), names_to = "변수", values_to = "값") %>% 
+  mutate(데이터셋 = case_when(str_detect(변수, "1") ~ "1번 데이터셋",
+                          str_detect(변수, "2") ~ "2번 데이터셋",
+                          str_detect(변수, "3") ~ "3번 데이터셋",
+                          str_detect(변수, "4") ~ "4번 데이터셋")) %>% 
+  mutate(변수 = str_remove(변수, "\\d")) %>% 
+  select(데이터셋, 변수, 값)
+
+anscombe_tbl
+```
+]
+.pull-right[
+```{r anscombe-data-out, ref.label="anscombe-data", echo=FALSE}
+```
+]
+]
+
+.panel[.panel-name[평균]
+
+.pull-left[
+
+```{r anscombe-mean, eval = FALSE}
+anscombe_tbl %>%
+  group_by(데이터셋, 변수) %>%
+  summarise(mean  = mean(값)) %>%
+  pivot_wider(names_from = 변수, values_from = mean)
+```
+]
+.pull-right[
+```{r anscombe-mean-out, ref.label="anscombe-mean", echo=FALSE}
+```
+]
+]
+
+.panel[.panel-name[분산]
+
+.pull-left[
+
+```{r anscombe-var, eval = FALSE}
+anscombe_tbl %>%
+  group_by(데이터셋, 변수) %>%
+  summarise(var  = var(값)) %>%
+  pivot_wider(names_from = 변수, values_from = var)
+
+```
+]
+.pull-right[
+```{r anscombe-var-out, ref.label="anscombe-var", echo=FALSE}
+```
+]
+]
+
+.panel[.panel-name[상관계수]
+
+.pull-left[
+
+```{r anscombe-cor, eval = FALSE}
+custom_correlation <- function(df) {
+  cor(df$x, df$y)
+}
+
+anscombe_tbl %>% 
+  pivot_wider(names_from=`변수`, values_from = `값`) %>% 
+  unnest(cols = c(x, y)) %>% 
+  group_by(데이터셋) %>% 
+  nest() %>% 
+  mutate(corr = map(data, custom_correlation)) %>%
+  unnest(corr)
+```
+]
+.pull-right[
+```{r anscombe-cor-out, ref.label="anscombe-cor", echo=FALSE}
+```
+]
+]
+
+
+]
+
+---
+name: anscombe
+
+`r flipbookr::chunk_reveal("anscombe", title = "### 공룡 데이터",  widths = c(50, 50))`
+
+
+```{r anscombe, include = FALSE, cache=TRUE}
+library(tidyverse)
+
+anscombe_tbl %>% 
+  pivot_wider(names_from=`변수`, values_from = `값`) %>% 
+  unnest(cols = c(x, y)) %>% 
+  ggplot(aes(x = x,  y = y)) +
+    geom_point() +
+    facet_wrap(facets = vars(데이터셋)) +
+    # mean of x
+    ggxmean::geom_x_mean() +
+    ggxmean::geom_y_mean() +
+    # mean of y
+    ggxmean:::geom_x1sd(linetype = "dashed") +
+    ggxmean:::geom_y1sd(linetype = "dashed") +
+    # linear model
+    ggxmean::geom_lm() +
+    ggxmean::geom_lm_formula() +
+    # Pearson correlation
+    ggxmean:::geom_corrlabel()
+```
 
 ---
 class: center, middle, inverse
 
-# 시각화
-
-## 시각화의 중요성
+# 공룡 데이터
 
 ---
 name: datasauRus
@@ -12,7 +164,7 @@ name: datasauRus
 `r flipbookr::chunk_reveal("datasauRus", title = "### 공룡 데이터",  widths = c(50, 50))`
 
 
-```{r datasauRus, include = FALSE, cache=TRUE}
+```{r datasauRus, include = FALSE}
 library(tidyverse)
 
 datasauRus::datasaurus_dozen %>%
@@ -35,33 +187,85 @@ datasauRus::datasaurus_dozen %>%
 
 ---
 name: datasauRus-stat
+### 기술통계량
 
-`r flipbookr::chunk_reveal("datasauRus-stat", title = "### 공룡 데이터",  left_assign = "detect", widths = c(50, 50))`
+
+.panelset[
+
+.panel[.panel-name[데이터셋]
+
+.pull-left[
+
+```{r datasauRus-data, eval = FALSE}
+datasauRus::datasaurus_dozen
+```
+]
+.pull-right[
+```{r datasauRus-data-out, ref.label="datasauRus-data", echo=FALSE}
+```
+]
+]
 
 
-```{r datasauRus-stat, include = FALSE}
-library(gt)
+.panel[.panel-name[평균]
 
+.pull-left[
+
+```{r datasauRus-mean, eval = FALSE}
 datasauRus::datasaurus_dozen %>%
-  pivot_longer(cols = x:y) %>% 
-  group_by(dataset, name) %>% 
-  summarise(mean  = mean(value)) %>% 
+  pivot_longer(cols = x:y) %>%
+  group_by(dataset, name) %>%
+  summarise(mean  = mean(value)) %>%
   pivot_wider(names_from = name, values_from = mean)
+```
+]
+.pull-right[
+```{r datasauRus-mean-out, ref.label="datasauRus-mean", echo=FALSE}
+```
+]
+]
 
+.panel[.panel-name[분산]
+
+.pull-left[
+
+```{r datasauRus-var, eval = FALSE}
 datasauRus::datasaurus_dozen %>%
-  pivot_longer(cols = x:y) %>% 
-  group_by(dataset, name) %>% 
-  summarise(var  = var(value)) %>% 
+  pivot_longer(cols = x:y) %>%
+  group_by(dataset, name) %>%
+  summarise(var  = var(value)) %>%
   pivot_wider(names_from = name, values_from = var)
 
+```
+]
+.pull-right[
+```{r datasauRus-var-out, ref.label="datasauRus-var", echo=FALSE}
+```
+]
+]
+
+.panel[.panel-name[상관계수]
+
+.pull-left[
+
+```{r datasauRus-cor, eval = FALSE}
 custom_correlation <- function(df) {
   cor(df$x, df$y)
 }
 
 datasauRus::datasaurus_dozen %>%
-  group_by(dataset) %>% 
-  nest() %>% 
-  mutate(corr = map(data, custom_correlation)) %>% 
+  group_by(dataset) %>%
+  nest() %>%
+  mutate(corr = map(data, custom_correlation)) %>%
   unnest(corr)
+
 ```
+]
+.pull-right[
+```{r datasauRus-cor-out, ref.label="datasauRus-cor", echo=FALSE}
+```
+]
+]
+
+]
 

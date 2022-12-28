@@ -1,0 +1,26 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-12-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+```
+
+
+
+```{r}
+library(tidyverse)
+
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/why_viz.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
