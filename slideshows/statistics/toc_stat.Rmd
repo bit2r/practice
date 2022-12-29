@@ -62,3 +62,19 @@ xaringanExtra::embed_xaringan(
 ```
 
 [바로가기](ols.html)
+
+# 가설 검정
+
+```{r}
+
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/testing.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](test.html)
+
+

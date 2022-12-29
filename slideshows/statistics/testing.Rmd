@@ -1,0 +1,128 @@
+---
+title: "통계학"
+subtitle: "가설검정"
+author: "이광춘"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4)
+
+library(tidyverse)
+library(flipbookr)
+
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+```
+
+
+---
+name: anscombe
+### 통계적 독립 데이터셋
+
+.panelset[
+
+.panel[.panel-name[R 코드]
+
+.pull-left[
+```{r nhst, include = TRUE}
+library(tidyverse)
+
+# Create first dataset
+dataset1 <- data.frame(
+  value = c(0.72, 0.61, 0.35, 0.19, 0.47, 0.99, 0.12, 0.84, 0.65, 0.38, 
+            0.01, 0.25, 0.96, 0.77, 0.54, 0.82, 0.36, 0.43, 0.06, 0.92, 
+            0.21, 0.17, 0.78, 0.68, 0.94, 0.40, 0.52, 0.29)
+)
+
+# Create second dataset
+dataset2 <- data.frame(
+  value = c(0.82, 0.23, 0.67, 0.42, 0.91, 0.17, 0.56, 0.95, 0.03, 0.87, 
+            0.74, 0.45, 0.28, 0.88, 0.51, 0.85, 0.10, 0.72, 0.80, 0.35, 
+            0.57, 0.90, 0.33, 0.06, 0.59, 0.01, 0.23, 0.39)
+)
+
+ind_df <- bind_cols(dataset1, dataset2) %>% 
+  as_tibble() %>% 
+  set_names(c("변수1", "변수2"))
+
+# ind_df
+```
+]
+
+.pull-right[
+```{r}
+ind_df
+```
+
+]
+]
+
+.panel[.panel-name[파이썬 코드]
+```{python, eval = FALSE}
+# Create first dataset
+dataset1 = {'value': [0.72, 0.61, 0.35, 0.19, 0.47, 0.99, 0.12, 0.84, 0.65, 0.38, 
+                     0.01, 0.25, 0.96, 0.77, 0.54, 0.82, 0.36, 0.43, 0.06, 0.92, 
+                     0.21, 0.17, 0.78, 0.68, 0.94, 0.40, 0.52, 0.29]}
+
+# Create second dataset
+dataset2 = {'value': [0.82, 0.23, 0.67, 0.42, 0.91, 0.17, 0.56, 0.95, 0.03, 0.87, 
+                     0.74, 0.45, 0.28, 0.88, 0.51, 0.85, 0.10, 0.72, 0.80, 0.35, 
+                     0.57, 0.90, 0.33, 0.06, 0.59, 0.01, 0.23, 0.39, 0.64]}
+
+# View first few rows of first dataset
+print(list(dataset1.values())[:5])
+# [0.72, 0.61, 0.35, 0.19, 0.47]
+
+
+```
+
+]
+]
+
+
+---
+### 통계적으로 독립 : 연속형 두 변수
+
+`r chunk_reveal("two-independent-continuous", break_type = "user", widths = c(35, 65))`
+
+
+```{r two-independent-continuous, include = FALSE }
+## 데이터셋
+ind_df %>% slice_head(n=2)  #BREAK
+
+#
+#
+#
+
+## 시각화
+ggplot(data = ind_df) +
+  aes(x = 변수1) +
+  aes(y = 변수2) +
+  geom_point(color = "steelblue",
+             alpha = .8) #BREAK
+
+#
+#
+#
+#
+#
+#
+## 통계검정
+cor.test(x = ind_df$변수1, 
+         y = ind_df$변수1) #BREAK
+```
+
