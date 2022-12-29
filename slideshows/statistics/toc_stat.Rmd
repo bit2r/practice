@@ -18,6 +18,20 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 ```
 
+# 중심극한정리
+
+```{r}
+
+slide_path <- glue::glue("{here::here()}/statistics.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](../../statistics.html)
+
 
 # 시각화
 
@@ -34,12 +48,12 @@ xaringanExtra::embed_xaringan(
 
 [바로가기](why_viz.html)
 
-# 중심극한정리
+
+# 단순 선형회귀
 
 ```{r}
-library(tidyverse)
 
-slide_path <- glue::glue("{here::here()}/statistics.html")
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/ols.html")
 
 xaringanExtra::embed_xaringan(
   url = slide_path,
@@ -47,4 +61,4 @@ xaringanExtra::embed_xaringan(
 )
 ```
 
-[바로가기](../../statistics.html)
+[바로가기](ols.html)
