@@ -18,10 +18,9 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 ```
 
-# 중심극한정리
+# 정규분포
 
 ```{r}
-
 slide_path <- glue::glue("{here::here()}/statistics.html")
 
 xaringanExtra::embed_xaringan(
@@ -31,6 +30,19 @@ xaringanExtra::embed_xaringan(
 ```
 
 [바로가기](../../statistics.html)
+
+## 중심극한정리
+
+```{r}
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/distribution_clt.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](distribution_clt.html)
 
 
 # 시각화
@@ -61,7 +73,7 @@ xaringanExtra::embed_xaringan(
 )
 ```
 
-[바로가기](test.html)
+[바로가기](testing.html)
 
 
 # 단순 선형회귀
@@ -77,4 +89,8 @@ xaringanExtra::embed_xaringan(
 ```
 
 [바로가기](ols.html)
+
+
+- 코드출처: [Gina Reynolds](https://evangelinereynolds.netlify.app/)
+
 

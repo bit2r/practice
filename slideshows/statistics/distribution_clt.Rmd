@@ -1,0 +1,247 @@
+---
+title: "중심극한정리"
+subtitle: "각종 분포 &rarr; 정규분포"
+author: "이광춘"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4)
+
+library(tidyverse)
+library(flipbookr)
+library(extrafont)
+loadfonts()
+
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+
+clt_theme <- theme_minimal(base_family = "MaruBuri Regular") + 
+  theme(plot.background = element_rect("grey96", color = "grey90")) 
+```
+
+```{css, eval = TRUE, echo = F}
+.remark-code{line-height: 1.5; font-size: 30%}
+```
+
+
+
+---
+class: middle, center
+
+# 정규분포에서 추출한 표본의 평균
+## 정규분포(평균 0, 표준편차 1) &rarr; 
+### 관측점 50번씩 추출을 100회 반복
+
+
+---
+
+`r chunk_reveal("rnorm", break_type = 10, title = "### N(0,1) ~ 관측점 50 개 추출", widths = c(50, 50))`
+
+```{r rnorm, include = FALSE}
+
+tibble(var = rnorm(50, mean = 0, sd = 1)) %>% 
+  ggplot() +
+    aes(x = var) +
+    geom_rug() +
+    geom_histogram(alpha = .15) +
+    clt_theme +
+    geom_rug(data = . %>% 
+               summarise(mean_var = mean(var)),
+             mapping = aes(x = mean_var),
+             color = "goldenrod",
+             size = 2) +
+    scale_y_continuous(limits = c(0,12)) +
+    scale_x_continuous(limits = c(-3.5,3.5))  +
+    labs(x = "변수", y = "빈도수",
+         title = "정규분포에서 표본 50개 추출",
+         subtitle = "정규분포 ~ 평균: 0, 표준편차 = 1")
+  
+```
+
+
+---
+
+`r chunk_reveal("rnorm_sample", break_type = 1, , title = "### 표본평균의 분포 ~ 정규분포", widths = c(50, 50))`
+
+```{r rnorm_sample, include = FALSE}
+tibble(trial = 1:100) %>% 
+  crossing(unit_id = 1:50) %>% 
+  group_by(trial) %>% 
+  mutate(var = rnorm(1:50, mean = 0, sd = 1)) %>% 
+  summarise(sample_mean = mean(var)) %>% 
+  ggplot() +
+  aes(x = sample_mean) +
+  geom_rug(color = "goldenrod",
+           alpha = .2) +
+  geom_histogram(alpha = .6,
+                 fill = "goldenrod", aes(y = ..density..)
+                 ) +
+  geom_density(color = "grey") +
+  clt_theme +
+  scale_x_continuous(limits = c(-3.5, 3.5)) +
+    labs(x = "표본 평균", y = "밀도(density)",
+         title = "표본평균의 분포")  
+```
+
+---
+class: middle, center
+
+# 균등분포에서 추출한 표본의 평균
+## 균등분포(최소 0, 최대 1) &rarr; 
+### 관측점 50번씩 추출을 100회 반복
+
+
+---
+
+`r chunk_reveal("runif", break_type = 10, title = "### U(0,1) ~ 관측점 50 개 추출", widths = c(50, 50))`
+
+```{r runif, include = FALSE}
+
+tibble(var = runif(50, min = 0, max = 1)) %>% 
+  ggplot() +
+    aes(x = var) +
+    geom_rug() +
+    geom_histogram(alpha = .15) +
+    clt_theme +
+    geom_rug(data = . %>% 
+               summarise(mean_var = mean(var)),
+             mapping = aes(x = mean_var),
+             color = "goldenrod",
+             size = 2) +
+    scale_y_continuous(limits = c(0,12)) +
+    scale_x_continuous(limits = c(-0.1, 1.1))  +
+    labs(x = "변수", y = "빈도수",
+         title = "균등분포에서 표본 50개 추출",
+         subtitle = "균등분포 ~ 최소: 0, 최대 = 1")
+  
+```
+
+
+---
+
+`r chunk_reveal("runif_sample", break_type = 1, , title = "### 표본평균의 분포 ~ 균등분포", widths = c(50, 50))`
+
+```{r runif_sample, include = FALSE}
+tibble(trial = 1:100) %>% 
+  crossing(unit_id = 1:50) %>% 
+  group_by(trial) %>% 
+  mutate(var = runif(1:50, min = 0, max = 1)) %>% 
+  summarise(sample_mean = mean(var)) %>% 
+  ggplot() +
+  aes(x = sample_mean) +
+  geom_rug(color = "goldenrod",
+           alpha = .2) +
+  geom_histogram(alpha = .6,
+                 fill = "goldenrod", aes(y = ..density..)
+                 ) +
+  geom_density(color = "grey") +
+  clt_theme +
+  scale_x_continuous(limits = c(-.05,1.05)) +
+    labs(x = "표본 평균", y = "밀도(density)",
+         title = "표본평균의 분포")  
+```
+
+
+---
+class: middle, center
+
+# 지수분포에서 추출한 표본의 평균
+## 지수분포 (λ=1) &rarr; 
+### 관측점 50번씩 추출을 100회 반복
+
+---
+### 지수분포
+
+.pull-left[
+```{r}
+lambda <- seq(from = 1, to = 12, by = 1)
+
+lambda_g <- tibble(lambda = lambda) %>% 
+  mutate(samples = map(lambda, rexp, n = 50)) %>% 
+  unnest(cols = samples) %>% 
+  mutate(lamdba = glue::glue("λ = {lambda}")) %>% 
+  ggplot(aes(x = samples)) +
+    geom_rug(color = "goldenrod",
+             alpha = .2) +
+    geom_histogram(alpha = .6,
+                   fill = "goldenrod", aes(y = ..density..)
+                   ) +
+    geom_density(color = "grey") +
+    clt_theme  +
+    facet_wrap( ~ lambda) +
+    scale_x_continuous(limits = c(0, 3))
+```
+]
+
+.pull-right[
+```{r}
+lambda_g
+```
+]
+
+
+---
+
+`r chunk_reveal("rexp", break_type = 10, title = "### Exp(12) ~ 관측점 50 개 추출", widths = c(50, 50))`
+
+```{r rexp, include = FALSE}
+
+tibble(var = rexp(50, rate = 12)) %>% 
+  ggplot() +
+    aes(x = var) +
+    geom_rug() +
+    geom_histogram(alpha = .15) +
+    clt_theme +
+    geom_rug(data = . %>% 
+               summarise(mean_var = mean(var)),
+             mapping = aes(x = mean_var),
+             color = "goldenrod",
+             size = 2) +
+    scale_y_continuous(limits = c(0,12)) +
+    scale_x_continuous(limits = c(0, 1))  +
+    labs(x = "변수", y = "빈도수",
+         title = "지수분포에서 표본 50개 추출",
+         subtitle = "지수분포 ~ λ = 12")
+  
+```
+
+
+---
+
+`r chunk_reveal("rexp_sample", break_type = 1, , title = "### 표본평균의 분포 ~ 지수분포", widths = c(50, 50))`
+
+```{r rexp_sample, include = FALSE}
+tibble(trial = 1:100) %>% 
+  crossing(unit_id = 1:50) %>% 
+  group_by(trial) %>% 
+  mutate(var = rexp(1:50, rate = 12)) %>% 
+  summarise(sample_mean = mean(var)) %>% 
+  ggplot() +
+  aes(x = sample_mean) +
+  geom_rug(color = "goldenrod",
+           alpha = .2) +
+  geom_histogram(alpha = .6,
+                 fill = "goldenrod", aes(y = ..density..)
+                 ) +
+  geom_density(color = "grey") +
+  clt_theme +
+  scale_x_continuous(limits = c(0, 0.3)) +
+    labs(x = "표본 평균", y = "밀도(density)",
+         title = "표본평균의 분포")  
+```
+
+

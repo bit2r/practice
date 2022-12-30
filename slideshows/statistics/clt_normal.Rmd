@@ -262,4 +262,3 @@ galton_static
 .footnote[
 - 코드출처: [Minimal Galton Board - Gina Reynolds](https://evamaerey.github.io/statistics/galton_board.html)
 ]
-
