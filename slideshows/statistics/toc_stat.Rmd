@@ -49,20 +49,6 @@ xaringanExtra::embed_xaringan(
 [바로가기](why_viz.html)
 
 
-# 단순 선형회귀
-
-```{r}
-
-slide_path <- glue::glue("{here::here()}/slideshows/statistics/ols.html")
-
-xaringanExtra::embed_xaringan(
-  url = slide_path,
-  ratio = "16:9"
-)
-```
-
-[바로가기](ols.html)
-
 # 가설 검정
 
 ```{r}
@@ -77,4 +63,18 @@ xaringanExtra::embed_xaringan(
 
 [바로가기](test.html)
 
+
+# 단순 선형회귀
+
+```{r}
+
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/ols.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](ols.html)
 
