@@ -28,9 +28,12 @@ xaringanExtra::use_share_again()
 xaringanExtra::use_panelset()
 ```
 
+```{css, eval = TRUE, echo = F}
+.remark-code{line-height: 1.5; font-size: 30%}
+```
 
 ---
-name: anscombe
+name: independent_dataset
 ### 통계적 독립 데이터셋
 
 .panelset[
@@ -95,26 +98,22 @@ print(list(dataset1.values())[:5])
 
 
 ---
-### 통계적으로 독립 : 연속형 두 변수
 
-`r chunk_reveal("two-independent-continuous", break_type = "user", widths = c(35, 65))`
+`r flipbookr::chunk_reveal("two-independent-continuous", title = "##### 통계적으로 독립 : 연속형 두 변수", widths = c(35, 65))`
 
 
 ```{r two-independent-continuous, include = FALSE }
 ## 데이터셋
-ind_df %>% slice_head(n=2)  #BREAK
-
+ind_df %>% slice_head(n=5)
 #
 #
 #
-
 ## 시각화
 ggplot(data = ind_df) +
   aes(x = 변수1) +
   aes(y = 변수2) +
   geom_point(color = "steelblue",
-             alpha = .8) #BREAK
-
+             alpha = .8) 
 #
 #
 #
@@ -123,6 +122,282 @@ ggplot(data = ind_df) +
 #
 ## 통계검정
 cor.test(x = ind_df$변수1, 
-         y = ind_df$변수1) #BREAK
+         y = ind_df$변수1)
+```
+
+
+---
+class: center, middle, inverse
+# Y (연속형), X (연속형) 
+
+
+---
+### 통계적으로 독립 : 연속형 두 변수
+
+---
+
+
+```{r, echo = F}
+# partial knit chunks
+
+reveal_sequence <- function(chunk_name, num_ensembles = 10, seed = sample(1000:2000, num_ensembles, replace = F)) {
+  # Create slide for lines 1:N for each line N in the given chunk
+  # break_points <- seq_along(knitr:::knit_code$get(chunk_name)) # original code, breaks for each line
+
+    out <- glue::glue(
+      "class: split-40",
+      "count: false",
+      "```{r set_{{chunk_name}}_{{seed}}_1, echo = F}",
+      "set.seed({{seed}})",
+      "```",
+      ".column[.content[",
+      "```{r code_{{chunk_name}}_{{seed}}, eval=FALSE, code=knitr::knit_code$get('{{chunk_name}}')}",
+      "```",
+      "]]",
+      # "```{r set_{{chunk_name}}_{{seed}}_2, echo = F}",
+      # "set.seed({{seed}})",
+      # "```",
+      ".column[.content[",
+      "```{r output_{{chunk_name}}_{{seed}}, echo=FALSE, code=knitr::knit_code$get('{{chunk_name}}'), , comment='   '}",
+      "```",
+      "]]",
+      .open = "{{", .close = "}}", .sep = "\n"
+    )
+
+  glue::glue_collapse(x = out, sep = "\n---\n")
+}
+
+apply_repeat_reveal <- function(...){
+  paste(knitr::knit(text = reveal_sequence(...)), collapse = "\n")
+}
+
+```
+
+
+`r chunk_reveal("independent", break_type = 20, title = "##### 두변수(머리털 길이와 뇌 무게) 통계적 독립")`
+
+```{r independent, echo = F, eval = F, out.width="20%", comment=""}
+library(tidyverse)
+tibble(hair_length = rnorm(n = 50), 
+       brain_weight = rnorm(n = 50)) ->
+ind_data; ind_data %>% slice_head( n = 3)
+
+
+
+
+
+
+
+
+
+
+ggplot(data = ind_data) +
+  aes(x = hair_length) +
+  aes(y = brain_weight) +
+  geom_point(color = "steelblue",
+             alpha = .8) +
+  theme(panel.background = 
+          element_rect(
+            color =
+              ifelse(cor.test(ind_data$hair_length, ind_data$brain_weight)[[3]]<.05, "red", "black"),
+            size =  
+              ifelse(cor.test(ind_data$hair_length, ind_data$brain_weight)[[3]]<.05, 8, 3))) +
+  labs(x = "머리털 길이", y = "뇌 무게")
+
+
+
+
+
+
+
+
+
+
+
+
+cor.test(x = ind_data$hair_length, 
+         y = ind_data$brain_weight)
+```
+
+---
+class: center, middle, inverse
+# Y (연속형), X (2 범주) 
+
+---
+
+`r chunk_reveal(chunk_name = "c_and_d2", break_type = 20, title = "##### 두집단(남/녀) 신장이 독립")`
+
+```{r c_and_d2, echo = F, eval = F}
+tibble(sex = sample(x = c("남성","여성"), 
+                    size = 50, 
+                    replace = TRUE)) %>% 
+  mutate(height = rnorm(n = 50, mean = 170, sd = 10)) ->
+  height_data; height_data %>% slice_head( n = 3)
+#
+#
+#
+#
+#
+#
+#
+# visualization
+ggplot(height_data) +
+  aes(x = sex) +
+  aes(y = height) +
+  aes(group = sex) +
+  geom_boxplot() +
+  geom_jitter(height = 0,
+              width = .02) +
+  stat_summary(fun.y = mean,
+               geom = "point",
+               col = "goldenrod3",
+               size = 5) +
+  labs(x= "성별", y = "신장")
+
+
+
+
+
+# statistical test
+t.test(height_data$height ~ # the continuous variable by (~)
+         height_data$sex) # the discrete variable
+
+```
+
+
+
+---
+class: center, middle, inverse
+# Y (연속형), X (N 범주) 
+
+---
+
+`r chunk_reveal(chunk_name = "c_and_d3", break_type = 20, title = "##### N 학급 신장이 독립")`
+
+
+```{r c_and_d3, echo = F, eval = F}
+tibble(class = sample(x = c("1반","2반","3반","특수반"), 
+                  size = 50, 
+                  replace = TRUE)) %>% 
+  mutate(height = rnorm(n = 50, mean = 170, sd = 10)) ->
+height_data; height_data %>% slice_head( n = 3)
+#
+#
+#
+#
+# visualization
+ggplot(height_data) +
+  aes(x = class) +
+  aes(y = height) +
+  aes(group = class) +
+  geom_boxplot() +
+  geom_jitter(height = 0,
+              width = .02) +
+  stat_summary(fun.y = mean,
+               geom = "point",
+               col = "goldenrod3",
+               size = 5) +
+  labs( x = "학년", y = "신장")
+
+
+
+
+
+# statistical test
+TukeyHSD(aov(height_data$height ~ # the continuous variable by (~)
+             height_data$class)) # the discrete variable
+
+```
+
+
+
+---
+class: center, middle, inverse
+# Y (범주), X (범주) 
+
+---
+
+`r chunk_reveal(chunk_name = "d_and_d", break_type = 20)`
+
+
+```{r d_and_d, echo = FALSE, eval = FALSE}
+# 데이터
+tibble(sex = sample(x = c("남자","여자"), 
+                  size = 100, 
+                  replace = TRUE), 
+       handed = sample(x = c("왼손잡이", "오른손잡이"), 
+                  size = 100, 
+                  replace = TRUE, 
+                  prob = c(.3,.7))) ->
+handed_data ; handed_data %>% slice_head( n = 3)
+
+# 시각화
+library(ggmosaic); library(janitor); library(patchwork)
+ggplot(data = handed_data) +
+  geom_mosaic(aes(x = product(sex), fill = handed)) + 
+  labs(x = "성별", y = "손잡이",
+       fill = "손잡이 구분")
+
+# 표
+table(x = handed_data$sex, y = handed_data$handed)
+
+#
+#
+#
+#
+# 검정통계량
+chisq.test(x = handed_data$sex, 
+           y = handed_data$handed) 
+```
+
+---
+
+`r chunk_reveal(chunk_name = "gt_table", title = "##### 데이터 &rarr; 요약통계 &rarr; 표")`
+
+
+```{r gt_table, include = FALSE}
+library(gt); library(janitor)
+
+handed_data <- tibble(sex = sample(x = c("남자","여자"), size = 100, replace = TRUE), 
+       handed = sample(x = c("왼손잡이", "오른손잡이"), size = 100, replace = T, prob = c(.3,.7))) 
+
+# 표
+handed_data %>% 
+  tabyl(sex, handed) %>% 
+  adorn_totals(where = c("row", "col"), name = "합계") %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 0) %>% 
+  adorn_ns(position = "rear") %>% 
+  # 표 외양
+  gt() %>% 
+    tab_header(
+      title = md("**&#9755; 2변량 교차 범주형 데이터 &#9754;**"),
+    ) %>% 
+    cols_align(
+      align = "right",
+      columns = c(오른손잡이, 왼손잡이, 합계)
+    ) %>% 
+    tab_options(
+      table.width = pct(70),
+      heading.background.color = "#1E61B0", # R logo 파란색
+      heading.title.font.size = "17px",
+      column_labels.background.color = "#F7F7F7", # R logo 회색 
+      column_labels.font.weight = "bold",
+      stub.background.color = "#ffffff",
+      stub.font.weight = "bold"
+    )  %>% 
+  tab_spanner(label = "요약 통계량", columns =  c(오른손잡이, 왼손잡이)) %>% 
+  tab_style(
+    style = list(
+      cell_fill(color = "lightblue"),
+      cell_text(
+        align = "right",
+        size = "large",
+        weight = "bold")
+      ),
+    locations = cells_body(rows = sex == "합계",
+                           columns = 합계))  
+
+
 ```
 
