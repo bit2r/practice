@@ -1,0 +1,116 @@
+---
+title: "기계학습"
+description: "의사결정나무"
+date: today # 날짜 설정: now, last-modified
+author:
+  - name: 이광춘
+    affiliation: 한국R사용자회
+title-block-banner: false
+format:
+  html:
+    theme: 
+      - flatly
+      - css/quarto-fonts.css
+    code-fold: false
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    highlight-style: github    
+    self-contained: false
+editor_options: 
+  chunk_output_type: console
+filters:
+  - lightbox
+lightbox: auto    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4)
+```
+
+- GitHub [martin-borkovec/ggparty](https://github.com/martin-borkovec/ggparty)
+- [의사결정나무 시각화 (Plotting decision tree in r) - rpart, rpart.plot](https://velog.io/@hyangki0119/R-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%EB%82%98%EB%AC%B4-%EC%8B%9C%EA%B0%81%ED%99%94-Plotting-decision-tree-in-r-rpart-rpart.plot)
+
+# 시각화
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(parttree)
+library(palmerpenguins)
+library(ggparty)
+
+# 데이터셋
+penguins_tbl <- penguins %>% 
+  na.omit()
+
+# 기계학습모형
+penguins_dt <- 
+  decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("classification") %>%
+  fit(species ~ flipper_length_mm + bill_length_mm, data = penguins_tbl)
+
+```
+
+
+## 펭귄종 분류 - Decision Boundary
+
+[grantmcdermott/parttree, <https://github.com/grantmcdermott/parttree>]{.aside}
+
+```{r}
+# 시각화
+penguins_tbl %>%
+  ggplot(aes(x = flipper_length_mm, y = bill_length_mm)) +
+  # geom_jitter(aes(col=species), alpha=0.7) +
+  geom_point(aes(color = species)) +
+  geom_parttree(data = penguins_dt, aes(fill=species), alpha = 0.1,
+                flipaxes = FALSE) +
+  scale_color_manual(values = c("Adelie"  = "blue",
+                              "Chinstrap" = "darkgreen",
+                              "Gentoo" = "black")) +
+  scale_fill_manual(values = c("Adelie"  = "blue",
+                              "Chinstrap" = "darkgreen",
+                              "Gentoo" = "black")) +  
+  theme_minimal()
+
+```
+
+## 펭귄 종 분류
+
+
+```{r }
+library(rpart)
+
+rpart_fit <- rpart(species ~ flipper_length_mm + bill_length_mm, 
+                   data = penguins_tbl)
+
+partykit::as.party(rpart_fit) %>% 
+  ggparty() +
+    geom_edge(size = 1.5) +
+    geom_edge_label(colour = "gray30", size = 6) +
+    geom_node_splitvar() +
+    geom_node_plot(gglist = list(geom_bar(aes(x   = species,
+                                              fill = species),
+                                              alpha = 0.8),
+                                theme_bw(base_size = 15),
+                                scale_fill_manual(values = c("Adelie"  = "blue",
+                                                            "Chinstrap" = "darkgreen",
+                                                            "Gentoo" = "black")),
+                                labs(x = "",
+                                     y = "펭귄 개체수",
+                                     fill = "펭귄 종")
+                                ),
+                    shared_axis_labels = TRUE,
+                    legend_separator = TRUE
+                  ) +
+    geom_node_label(aes(label = paste0("노드 ", id, ", 펭귄수 = ", nodesize)),
+                    fontface = "bold",
+                    ids = "terminal",
+                    size = 5, 
+                    nudge_y = 0.01) +
+    theme(legend.position = "none") 
+```
+
