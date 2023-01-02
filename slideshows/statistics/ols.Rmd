@@ -239,4 +239,3 @@ sales_model %>%
     labs(title = "정규 QQ플롯")
 ```
 
-

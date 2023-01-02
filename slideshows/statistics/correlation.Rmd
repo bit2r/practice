@@ -1,0 +1,58 @@
+---
+title: "통계학"
+subtitle: "산포와 상관관계"
+author: "이광춘"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4)
+
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+
+source(glue::glue("{here::here()}/slideshows/statistics/util_correlation.R"))
+```
+
+---
+class: inverse, center, middle
+# 분산과 표준편차
+
+
+
+
+---
+
+`r flipbookr::chunk_reveal("cor_variance", break_type = 'user', title = "### 분산", display_type = c("md","output"), md = var_equation)`
+
+
+```{r cor_variance, include = FALSE}
+library(tidyverse)
+library(flipbookr)
+
+create_x_y(relationship = 1,
+           noise = 0) %>% 
+  data_create_scatterplot() %>% 
+  plot_change_ylab_to_x() %>% 
+  plot_correct_aspect_ratio() %>% #BREAK
+  plot_draw_mean_x() %>% #BREAK
+  plot_draw_mean_y() %>% #BREAK
+  plot_draw_differences_x() %>% #BREAK
+  plot_draw_differences_y() %>% #BREAK
+  plot_multiply_differences() %>% #BREAK
+  plot_take_average_rectangle(title = "Picture of Variance") #BREAK
+```
+
