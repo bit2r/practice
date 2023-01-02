@@ -1,5 +1,5 @@
 
-# 통계학
+# 기계학습
 
-- [통계학](statistics.html)
+- [통계학 기본기](slideshows/statistics/toc_stat.html)
 - [의사결정나무](decision_tree.html)
