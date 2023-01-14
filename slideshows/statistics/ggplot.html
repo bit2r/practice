@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>통계학</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="이광춘" />
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# 통계학
+]
+.subtitle[
+## 시각화 - 그래프 문법
+]
+.author[
+### 이광춘
+]
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 100%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+
+
+# 데이터셋
+
+
+.pull-left[
+
+```r
+library(tidyverse)
+library(gapminder)
+```
+
+]
+
+.pull-right[
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+
+]
+
+---
+
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+*gapminder::gapminder
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+* filter(year == 2002)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+
+```
+# A tibble: 142 × 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2002    42.1  25268405      727.
+ 2 Albania     Europe     2002    75.7   3508512     4604.
+ 3 Algeria     Africa     2002    71.0  31287142     5288.
+ 4 Angola      Africa     2002    41.0  10866106     2773.
+ 5 Argentina   Americas   2002    74.3  38331121     8798.
+ 6 Australia   Oceania    2002    80.4  19546792    30688.
+ 7 Austria     Europe     2002    79.0   8148312    32418.
+ 8 Bahrain     Asia       2002    74.8    656397    23404.
+ 9 Bangladesh  Asia       2002    62.0 135656790     1136.
+10 Belgium     Europe     2002    78.3  10311970    30486.
+# … with 132 more rows
+```
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+*   aes(x = gdpPercap)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+*   aes(y = lifeExp)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+*   geom_point()
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+*   aes(color = continent)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+*   aes(size = pop/1000000)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_08_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+*   labs(size = "인구수\n(백만명)")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_09_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+*   labs(color = NULL)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_10_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+*   labs(x = "1인당 GDP (미국 달러)")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_11_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+    labs(x = "1인당 GDP (미국 달러)") +
+*   labs(y = "기대수명 (연)")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_12_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+    labs(x = "1인당 GDP (미국 달러)") +
+    labs(y = "기대수명 (연)") +
+*   labs(title = "2022년 기준 기대수명과 1인당 GDP")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_13_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+    labs(x = "1인당 GDP (미국 달러)") +
+    labs(y = "기대수명 (연)") +
+    labs(title = "2022년 기준 기대수명과 1인당 GDP") +
+*   labs(subtitle = "데이터출처: gapminder 데이터패키지")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_14_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+    labs(x = "1인당 GDP (미국 달러)") +
+    labs(y = "기대수명 (연)") +
+    labs(title = "2022년 기준 기대수명과 1인당 GDP") +
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") +
+*   labs(caption = "flipbookr 패키지 저자 학습코드")
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_15_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 그래프 문법 사례
+.panel1-ggplot_viz-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+    aes(x = gdpPercap) +
+    aes(y = lifeExp) +
+    geom_point() +
+    aes(color = continent) +
+    aes(size = pop/1000000) +
+    labs(size = "인구수\n(백만명)") +
+    labs(color = NULL) +
+    labs(x = "1인당 GDP (미국 달러)") +
+    labs(y = "기대수명 (연)") +
+    labs(title = "2022년 기준 기대수명과 1인당 GDP") +
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") +
+    labs(caption = "flipbookr 패키지 저자 학습코드") +
+*   facet_wrap(~ continent)
+```
+]
+ 
+.panel2-ggplot_viz-auto[
+![](ggplot_files/figure-html/ggplot_viz_auto_16_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-ggplot_viz-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggplot_viz-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggplot_viz-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+*gapminder
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+* filter(year == 2002)
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 142 × 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2002    42.1  25268405      727.
+ 2 Albania     Europe     2002    75.7   3508512     4604.
+ 3 Algeria     Africa     2002    71.0  31287142     5288.
+ 4 Angola      Africa     2002    41.0  10866106     2773.
+ 5 Argentina   Americas   2002    74.3  38331121     8798.
+ 6 Australia   Oceania    2002    80.4  19546792    30688.
+ 7 Austria     Europe     2002    79.0   8148312    32418.
+ 8 Bahrain     Asia       2002    74.8    656397    23404.
+ 9 Bangladesh  Asia       2002    62.0 135656790     1136.
+10 Belgium     Europe     2002    78.3  10311970    30486.
+# … with 132 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+* filter(continent == "Europe")
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 30 × 6
+   country                continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Albania                Europe     2002    75.7  3508512     4604.
+ 2 Austria                Europe     2002    79.0  8148312    32418.
+ 3 Belgium                Europe     2002    78.3 10311970    30486.
+ 4 Bosnia and Herzegovina Europe     2002    74.1  4165416     6019.
+ 5 Bulgaria               Europe     2002    72.1  7661799     7697.
+ 6 Croatia                Europe     2002    74.9  4481020    11628.
+ 7 Czech Republic         Europe     2002    75.5 10256295    17596.
+ 8 Denmark                Europe     2002    77.2  5374693    32167.
+ 9 Finland                Europe     2002    78.4  5193039    28205.
+10 France                 Europe     2002    79.6 59925035    28926.
+# … with 20 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+* select(-lifeExp)
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 30 × 5
+   country                continent  year      pop gdpPercap
+   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Albania                Europe     2002  3508512     4604.
+ 2 Austria                Europe     2002  8148312    32418.
+ 3 Belgium                Europe     2002 10311970    30486.
+ 4 Bosnia and Herzegovina Europe     2002  4165416     6019.
+ 5 Bulgaria               Europe     2002  7661799     7697.
+ 6 Croatia                Europe     2002  4481020    11628.
+ 7 Czech Republic         Europe     2002 10256295    17596.
+ 8 Denmark                Europe     2002  5374693    32167.
+ 9 Finland                Europe     2002  5193039    28205.
+10 France                 Europe     2002 59925035    28926.
+# … with 20 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+* rename(population = pop)
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 30 × 5
+   country                continent  year population gdpPercap
+   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;      &lt;int&gt;     &lt;dbl&gt;
+ 1 Albania                Europe     2002    3508512     4604.
+ 2 Austria                Europe     2002    8148312    32418.
+ 3 Belgium                Europe     2002   10311970    30486.
+ 4 Bosnia and Herzegovina Europe     2002    4165416     6019.
+ 5 Bulgaria               Europe     2002    7661799     7697.
+ 6 Croatia                Europe     2002    4481020    11628.
+ 7 Czech Republic         Europe     2002   10256295    17596.
+ 8 Denmark                Europe     2002    5374693    32167.
+ 9 Finland                Europe     2002    5193039    28205.
+10 France                 Europe     2002   59925035    28926.
+# … with 20 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+* mutate(gdp_billions = gdpPercap * population / 10^8)
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 30 × 6
+   country                continent  year population gdpPercap gdp_billions
+   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;      &lt;int&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Albania                Europe     2002    3508512     4604.         162.
+ 2 Austria                Europe     2002    8148312    32418.        2641.
+ 3 Belgium                Europe     2002   10311970    30486.        3144.
+ 4 Bosnia and Herzegovina Europe     2002    4165416     6019.         251.
+ 5 Bulgaria               Europe     2002    7661799     7697.         590.
+ 6 Croatia                Europe     2002    4481020    11628.         521.
+ 7 Czech Republic         Europe     2002   10256295    17596.        1805.
+ 8 Denmark                Europe     2002    5374693    32167.        1729.
+ 9 Finland                Europe     2002    5193039    28205.        1465.
+10 France                 Europe     2002   59925035    28926.       17334.
+# … with 20 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+* arrange(gdp_billions)
+```
+]
+ 
+.panel2-wrangle-auto[
+
+```
+# A tibble: 30 × 6
+   country                continent  year population gdpPercap gdp_billions
+   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;      &lt;int&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Montenegro             Europe     2002     720230     6557.         47.2
+ 2 Iceland                Europe     2002     288030    31163.         89.8
+ 3 Albania                Europe     2002    3508512     4604.        162. 
+ 4 Bosnia and Herzegovina Europe     2002    4165416     6019.        251. 
+ 5 Slovenia               Europe     2002    2011497    20660.        416. 
+ 6 Croatia                Europe     2002    4481020    11628.        521. 
+ 7 Bulgaria               Europe     2002    7661799     7697.        590. 
+ 8 Serbia                 Europe     2002   10111559     7236.        732. 
+ 9 Slovak Republic        Europe     2002    5410052    13639.        738. 
+10 Ireland                Europe     2002    3879155    34077.       1322. 
+# … with 20 more rows
+```
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+* mutate(country =
+*        fct_reorder(country, gdp_billions)) -&gt; europe_2002
+```
+]
+ 
+.panel2-wrangle-auto[
+
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+*europe_2002 %&gt;% ggplot()
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_09_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+*   aes(x = gdp_billions)
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_10_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+*   aes(y = country)
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_11_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+    aes(y = country) +
+*   geom_col()
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_12_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+    aes(y = country) +
+    geom_col() +
+*   labs(y = NULL, x = "US$ Billions", title = "2002년 유럽소재 국가 GDP ")
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_13_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+    aes(y = country) +
+    geom_col() +
+    labs(y = NULL, x = "US$ Billions", title = "2002년 유럽소재 국가 GDP ") +
+*   labs(subtitle = "데이터출처: gapminder 데이터패키지")
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_14_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+    aes(y = country) +
+    geom_col() +
+    labs(y = NULL, x = "US$ Billions", title = "2002년 유럽소재 국가 GDP ") +
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") +
+*   labs(caption = "flipbookr 저자 Dr. Reynolds")
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_15_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+### 데이터 조작 후 시각화
+.panel1-wrangle-auto[
+
+```r
+gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  filter(continent == "Europe") %&gt;%
+  select(-lifeExp) %&gt;%
+  rename(population = pop) %&gt;%
+  mutate(gdp_billions = gdpPercap * population / 10^8) %&gt;%
+  arrange(gdp_billions) %&gt;%
+  mutate(country =
+         fct_reorder(country, gdp_billions)) -&gt; europe_2002
+
+europe_2002 %&gt;% ggplot() +
+    aes(x = gdp_billions) +
+    aes(y = country) +
+    geom_col() +
+    labs(y = NULL, x = "US$ Billions", title = "2002년 유럽소재 국가 GDP ") +
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") +
+    labs(caption = "flipbookr 저자 Dr. Reynolds") +
+*   theme_minimal(base_size = 10)
+```
+]
+ 
+.panel2-wrangle-auto[
+![](ggplot_files/figure-html/wrangle_auto_16_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-wrangle-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-wrangle-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-wrangle-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

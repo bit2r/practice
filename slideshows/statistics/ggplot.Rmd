@@ -1,0 +1,120 @@
+---
+title: "통계학"
+subtitle: "시각화 - 그래프 문법"
+author: "이광춘"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, 
+                      warning = F, comment = "",
+                      fig.height = 4)
+
+options(knitr.duplicate.label = "allow")
+xaringanExtra::use_share_again()
+xaringanExtra::use_panelset()
+```
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 100%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+
+# 데이터셋
+
+
+.pull-left[
+```{r ols_data}
+library(tidyverse)
+library(gapminder)
+
+
+```
+
+]
+
+.pull-right[
+```{r, echo=FALSE}
+gapminder
+```
+
+]
+
+---
+
+`r flipbookr::chunk_reveal("ggplot_viz", title = "### 그래프 문법 사례")`
+
+
+```{r ggplot_viz, include = F, eval = FALSE}
+gapminder::gapminder %>% 
+  filter(year == 2002) %>% 
+  ggplot() + 
+    aes(x = gdpPercap) + 
+    aes(y = lifeExp) + 
+    geom_point() + 
+    aes(color = continent) + 
+    aes(size = pop/1000000) + 
+    labs(size = "인구수\n(백만명)") + 
+    labs(color = NULL) + 
+    labs(x = "1인당 GDP (미국 달러)") + 
+    labs(y = "기대수명 (연)") + 
+    labs(title = "2022년 기준 기대수명과 1인당 GDP") + 
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") + 
+    labs(caption = "flipbookr 패키지 저자 학습코드") + 
+    facet_wrap(~ continent)
+```
+
+---
+
+`r flipbookr::chunk_reveal("wrangle", title = "### 데이터 조작 후 시각화")`
+
+```{r wrangle, include = F, out.width="80%", echo = F}
+gapminder %>% 
+  filter(year == 2002) %>% 
+  filter(continent == "Europe") %>% 
+  select(-lifeExp) %>% 
+  rename(population = pop) %>% 
+  mutate(gdp_billions = gdpPercap * population / 10^8) %>% 
+  arrange(gdp_billions) %>% 
+  mutate(country = 
+         fct_reorder(country, gdp_billions)) -> europe_2002
+
+europe_2002 %>% ggplot() + 
+    aes(x = gdp_billions) + 
+    aes(y = country) + 
+    geom_col() + 
+    labs(y = NULL, x = "US$ Billions", title = "2002년 유럽소재 국가 GDP ") + 
+    labs(subtitle = "데이터출처: gapminder 데이터패키지") + 
+    labs(caption = "flipbookr 저자 Dr. Reynolds") + 
+    theme_minimal(base_size = 10)
+```
+

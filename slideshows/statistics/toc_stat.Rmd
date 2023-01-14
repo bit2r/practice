@@ -18,6 +18,9 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 ```
 
+
+- 코드출처: [Gina Reynolds](https://evangelinereynolds.netlify.app/)
+
 # 정규분포
 
 ```{r}
@@ -91,6 +94,17 @@ xaringanExtra::embed_xaringan(
 [바로가기](ols.html)
 
 
-- 코드출처: [Gina Reynolds](https://evangelinereynolds.netlify.app/)
 
+# 그래프 문법
 
+```{r}
+
+slide_path <- glue::glue("{here::here()}/slideshows/statistics/ggplot.html")
+
+xaringanExtra::embed_xaringan(
+  url = slide_path,
+  ratio = "16:9"
+)
+```
+
+[바로가기](ggplot.html)
